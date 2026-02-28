@@ -2,10 +2,12 @@
 
 import { useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Search, X } from "lucide-react";
+import Link from "next/link";
+import { Search, X, Plus, CalendarDays } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { SignInButton } from "@/components/auth/SignInButton";
 import { UserMenu } from "@/components/auth/UserMenu";
+import { Button } from "@/components/ui/button";
 
 interface EventsNavProps {
   query: string;
@@ -72,8 +74,27 @@ export function EventsNav({ query, onQueryChange, className }: EventsNavProps) {
         )}
       </div>
 
-      {/* Auth */}
-      <div className="shrink-0">
+      {/* Actions */}
+      <div className="flex items-center gap-2 shrink-0">
+        <Link href="/explore">
+          <Button variant="ghost" size="sm" className="gap-1.5 text-xs text-text-secondary hover:text-text-primary hidden sm:flex">
+            <CalendarDays className="h-3.5 w-3.5" />
+            Explore
+          </Button>
+        </Link>
+
+        <Button
+          size="sm"
+          className="gap-1.5 text-xs bg-accent text-bg-deep hover:bg-accent/90 font-semibold"
+          onClick={() => {
+            // TODO: route to event creation flow
+            alert("Event creation coming soon!");
+          }}
+        >
+          <Plus className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">List Event</span>
+        </Button>
+
         {isAuthenticated ? <UserMenu /> : <SignInButton />}
       </div>
     </nav>

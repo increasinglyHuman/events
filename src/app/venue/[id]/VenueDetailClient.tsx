@@ -21,8 +21,15 @@ export function VenueDetailClient({ venue, upcoming, past }: VenueDetailClientPr
     <div className="min-h-screen">
       {/* Hero */}
       <div className="relative min-h-[240px]">
+        {venue.coverImage && (
+          <img
+            src={venue.coverImage}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-br from-accent/8 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-bg-deep" />
+        <div className="absolute inset-0 bg-gradient-to-b from-bg-deep/30 via-bg-deep/60 to-bg-deep" />
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-4 pt-6 pb-8 flex flex-col justify-end min-h-[240px]">
           <Link

@@ -8,6 +8,7 @@ import { MaturityBadge } from "./MaturityBadge";
 import { TimeBadge } from "./TimeBadge";
 import { RecurrenceBadge } from "./RecurrenceBadge";
 import { TicketInfo } from "./TicketInfo";
+import { OrganizerAvatar } from "./OrganizerAvatar";
 import { MapPin, Users, Radio } from "lucide-react";
 
 interface EventCardProps {
@@ -40,13 +41,22 @@ export function EventCard({ event, variant = "compact", className }: EventCardPr
           isFeatured ? "aspect-[16/9]" : "aspect-[4/3]",
         )}
       >
-        {/* Gradient placeholder cover */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(135deg, ${catMeta.color}22 0%, ${catMeta.color}08 50%, transparent 100%)`,
-          }}
-        />
+        {/* Cover image or gradient fallback */}
+        {event.coverImage ? (
+          <img
+            src={event.coverImage}
+            alt={event.title}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover/card:scale-105"
+            loading="lazy"
+          />
+        ) : (
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(135deg, ${catMeta.color}22 0%, ${catMeta.color}08 50%, transparent 100%)`,
+            }}
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-bg-deep/80" />
 
         {/* Category color stripe (top edge) */}
@@ -111,12 +121,7 @@ export function EventCard({ event, variant = "compact", className }: EventCardPr
 
         {/* Organizer */}
         <div className="flex items-center gap-1.5 text-[11px] text-text-secondary">
-          <div
-            className="h-4 w-4 rounded-full border border-border/30 flex items-center justify-center text-[8px] font-bold"
-            style={{ backgroundColor: `${catMeta.color}22`, color: catMeta.color }}
-          >
-            {event.organizerName.charAt(0)}
-          </div>
+          <OrganizerAvatar name={event.organizerName} avatar={event.organizerAvatar} size="sm" />
           <span className="truncate">{event.organizerName}</span>
         </div>
 

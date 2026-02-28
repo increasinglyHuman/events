@@ -20,10 +20,19 @@ export function VenueCard({ venue, className }: VenueCardProps) {
         className,
       )}
     >
-      <div className="aspect-[16/10] relative bg-gradient-to-br from-accent/10 to-transparent">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <MapPin className="h-8 w-8 text-accent/30" />
-        </div>
+      <div className="aspect-[16/10] relative overflow-hidden bg-gradient-to-br from-accent/10 to-transparent">
+        {venue.coverImage ? (
+          <img
+            src={venue.coverImage}
+            alt={venue.name}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover/venue:scale-105"
+            loading="lazy"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <MapPin className="h-8 w-8 text-accent/30" />
+          </div>
+        )}
       </div>
       <div className="p-2.5 flex flex-col gap-1.5">
         <h3 className="text-sm font-semibold text-text-primary line-clamp-1 group-hover/venue:text-accent transition-colors">

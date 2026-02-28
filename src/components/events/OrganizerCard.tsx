@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Star, Calendar } from "lucide-react";
+import { OrganizerAvatar } from "./OrganizerAvatar";
 import type { OrganizerProfile } from "@/types/social";
 
 interface OrganizerCardProps {
@@ -17,9 +18,7 @@ export function OrganizerCard({ organizer, className }: OrganizerCardProps) {
         className,
       )}
     >
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/10 border border-accent/20 text-accent font-bold text-sm">
-        {organizer.name.charAt(0)}
-      </div>
+      <OrganizerAvatar name={organizer.name} avatar={organizer.avatar} size="lg" />
       <div className="flex-1 min-w-0">
         <h4 className="text-sm font-semibold text-text-primary truncate">{organizer.name}</h4>
         <p className="text-[11px] text-text-muted line-clamp-1">{organizer.bio}</p>

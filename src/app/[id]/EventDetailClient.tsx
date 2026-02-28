@@ -56,10 +56,17 @@ export function EventDetailClient({
     <div className="min-h-screen">
       {/* Hero */}
       <div className="relative min-h-[300px] sm:min-h-[360px]">
+        {event.coverImage && (
+          <img
+            src={event.coverImage}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
         <div
           className="absolute inset-0"
           style={{
-            background: `linear-gradient(135deg, ${catMeta.color}15 0%, transparent 50%), linear-gradient(to bottom, transparent 40%, var(--color-bg-deep) 100%)`,
+            background: `linear-gradient(135deg, ${catMeta.color}25 0%, transparent 50%), linear-gradient(to bottom, var(--color-bg-deep)/20 0%, var(--color-bg-deep) 80%)`,
           }}
         />
         <div className="relative z-10 max-w-[1200px] mx-auto px-4 pt-6 pb-8 flex flex-col justify-end min-h-[300px] sm:min-h-[360px]">

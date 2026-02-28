@@ -43,14 +43,22 @@ export function FeaturedCarousel({ events, className }: FeaturedCarouselProps) {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Background */}
+      {/* Background image */}
+      {event.coverImage && (
+        <img
+          src={event.coverImage}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+        />
+      )}
+      {/* Gradient overlays */}
       <div
-        className="absolute inset-0 transition-all duration-700"
+        className="absolute inset-0"
         style={{
-          background: `linear-gradient(135deg, ${catMeta.color}18 0%, transparent 40%), linear-gradient(to right, var(--color-bg-deep) 0%, transparent 100%)`,
+          background: `linear-gradient(135deg, ${catMeta.color}30 0%, transparent 40%), linear-gradient(to right, var(--color-bg-deep) 0%, var(--color-bg-deep)/30 50%, transparent 100%)`,
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-bg-deep via-bg-deep/60 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-bg-deep via-bg-deep/70 to-bg-deep/20" />
 
       {/* Content */}
       <div className="relative z-10 flex flex-col justify-end p-6 min-h-[280px] sm:min-h-[320px]">
