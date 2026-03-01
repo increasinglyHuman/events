@@ -43,7 +43,13 @@ export function EventsNav({ query, onQueryChange, className }: EventsNavProps) {
     >
       <div className="flex items-center gap-4 max-w-[1400px] mx-auto px-4 py-2.5">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-1.5 shrink-0">
+        <Link href="/" className="flex items-center gap-2 shrink-0 group">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/events/poqpoq-fox.svg"
+            alt="poqpoq"
+            className="h-7 w-7 transition-transform group-hover:scale-110"
+          />
           <span className="text-sm font-semibold text-text-primary">Events</span>
         </Link>
 
