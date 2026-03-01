@@ -1,8 +1,11 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import type { Venue } from "@/types/venues";
+import { EventsNav } from "@/components/events/EventsNav";
 import type { CalendarEvent } from "@/types/events";
 import { EventStrip } from "@/components/events/EventStrip";
 import { Badge } from "@/components/ui/badge";
@@ -17,8 +20,20 @@ interface VenueDetailClientProps {
 }
 
 export function VenueDetailClient({ venue, upcoming, past }: VenueDetailClientProps) {
+  const router = useRouter();
+  const [navQuery, setNavQuery] = useState("");
+
+  function handleSearch(q: string) {
+    if (q) {
+      router.push(`/?q=${encodeURIComponent(q)}`);
+    } else {
+      setNavQuery("");
+    }
+  }
+
   return (
     <div className="min-h-screen">
+      <EventsNav query={navQuery} onQueryChange={handleSearch} />
       {/* Hero */}
       <div className="relative min-h-[240px]">
         {venue.coverImage && (

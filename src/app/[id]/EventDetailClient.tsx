@@ -1,8 +1,11 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { CATEGORY_META, OCCUPANCY_META, type CalendarEvent } from "@/types/events";
+import { EventsNav } from "@/components/events/EventsNav";
 import type { Venue } from "@/types/venues";
 import type { OrganizerProfile } from "@/types/social";
 import { DateBadge } from "@/components/events/DateBadge";
@@ -47,13 +50,24 @@ export function EventDetailClient({
   seriesEvents,
   similarEvents,
 }: EventDetailClientProps) {
+  const router = useRouter();
+  const [navQuery, setNavQuery] = useState("");
   const { downloadICS, googleCalendarUrl } = useCalendarExport();
   const catMeta = CATEGORY_META[event.category];
   const isLive = event.status === "in_progress";
   const isCancelled = event.status === "cancelled";
 
+  function handleSearch(q: string) {
+    if (q) {
+      router.push(`/?q=${encodeURIComponent(q)}`);
+    } else {
+      setNavQuery("");
+    }
+  }
+
   return (
     <div className="min-h-screen">
+      <EventsNav query={navQuery} onQueryChange={handleSearch} />
       {/* Hero */}
       <div className="relative min-h-[300px] sm:min-h-[360px]">
         {event.coverImage && (
