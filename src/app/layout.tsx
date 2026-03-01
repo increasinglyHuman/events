@@ -37,8 +37,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`dark ${dongle.variable} ${spaceMono.variable} ${montserrat.variable}`}>
-      <body className="min-h-screen h-full bg-bg-deep antialiased overflow-y-auto">
-        <AuthProvider>{children}</AuthProvider>
+      <body className="min-h-screen h-full bg-bg-deep antialiased overflow-y-auto relative">
+        {/* Oversized brand watermark — deep background hint */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center select-none"
+        >
+          <span
+            className="font-[family-name:var(--font-montserrat)] text-[clamp(24rem,55vw,52rem)] font-black leading-none tracking-tighter text-white/[0.03]"
+          >
+            pOq
+          </span>
+        </div>
+        <div className="relative z-10">
+          <AuthProvider>{children}</AuthProvider>
+        </div>
       </body>
     </html>
   );
