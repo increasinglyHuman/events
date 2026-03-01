@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useEventsSearch } from "@/hooks/useEventsSearch";
 import { FAKE_EVENTS } from "@/data/fake-events";
 import { FAKE_VENUES } from "@/data/fake-venues";
@@ -46,20 +46,17 @@ export default function EventsLanding() {
     [],
   );
 
-  const happeningNow = useMemo(
-    () => FAKE_EVENTS.filter(isHappeningNow),
-    [],
-  );
+  // Date-dependent filters deferred to useEffect to avoid hydration mismatch
+  // (build-time Date differs from client Date)
+  const [happeningNow, setHappeningNow] = useState<CalendarEvent[]>([]);
+  const [todayEvents, setTodayEvents] = useState<CalendarEvent[]>([]);
+  const [thisWeek, setThisWeek] = useState<CalendarEvent[]>([]);
 
-  const todayEvents = useMemo(
-    () => FAKE_EVENTS.filter(isToday).sort((a, b) => a.startTime.localeCompare(b.startTime)),
-    [],
-  );
-
-  const thisWeek = useMemo(
-    () => FAKE_EVENTS.filter(isThisWeek).sort((a, b) => a.startTime.localeCompare(b.startTime)),
-    [],
-  );
+  useEffect(() => {
+    setHappeningNow(FAKE_EVENTS.filter(isHappeningNow));
+    setTodayEvents(FAKE_EVENTS.filter(isToday).sort((a, b) => a.startTime.localeCompare(b.startTime)));
+    setThisWeek(FAKE_EVENTS.filter(isThisWeek).sort((a, b) => a.startTime.localeCompare(b.startTime)));
+  }, []);
 
   const recurring = useMemo(
     () =>
