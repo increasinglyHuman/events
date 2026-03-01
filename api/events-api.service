@@ -1,0 +1,45 @@
+# poqpoq Events API — systemd service
+# Install: sudo cp events-api.service /etc/systemd/system/
+#          sudo systemctl daemon-reload
+#          sudo systemctl enable events-api
+#          sudo systemctl start events-api
+#
+# NOTE: Uses systemd (not PM2) following NEXUS pattern.
+#       PM2 has ESM env var injection bugs that break "type": "module" packages.
+
+[Unit]
+Description=poqpoq Events API
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/events-api
+
+# Environment variables — must match production auth service
+Environment="NODE_ENV=production"
+Environment="PORT=3015"
+Environment="DB_HOST=127.0.0.1"
+Environment="DB_PORT=5432"
+Environment="DB_NAME=bbworlds_nexus"
+Environment="DB_USER=nexus_user"
+Environment="DB_PASSWORD=nexus_secure_2025"
+Environment="DATABASE_URL=postgresql://nexus_user:nexus_secure_2025@127.0.0.1:5432/bbworlds_nexus"
+# CRITICAL: JWT_SECRET must match the live auth service (voice-ninja/auth/google)
+# Check production: the value may be Auth_Unified_Secret_2025 or BBWorlds_UserServices_SecureKey_2025
+Environment="JWT_SECRET=Auth_Unified_Secret_2025"
+
+ExecStart=/usr/bin/node /home/ubuntu/events-api/dist/index.js
+
+Restart=on-failure
+RestartSec=10s
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=events-api
+
+# Resource limits (Good Neighbor: 200MB)
+MemoryMax=200M
+
+[Install]
+WantedBy=multi-user.target
