@@ -54,23 +54,20 @@ function toLocalInput(d: Date): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
+/**
+ * Static defaults (safe for SSR — no Date() or browser APIs).
+ * Dynamic values (dates, timezone) are set on client mount via applyDynamicDefaults().
+ */
 export function createDefaults(): CreateEventFormData {
-  const now = new Date();
-  const start = roundUp15(new Date(now.getTime() + 60 * 60_000)); // +1h
-  const end = new Date(start.getTime() + 2 * 60 * 60_000);       // +2h
-
-  let tz = "UTC";
-  try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch { /* */ }
-
   return {
     title: "",
     description: "",
     category: "",
     tags: [],
 
-    startsAt: toLocalInput(start),
-    endsAt: toLocalInput(end),
-    timezone: tz,
+    startsAt: "",
+    endsAt: "",
+    timezone: "UTC",
     recurrence: null,
 
     venueId: null,
@@ -86,6 +83,20 @@ export function createDefaults(): CreateEventFormData {
     coverImage: "",
     gallery: [],
   };
+}
+
+/** Apply dynamic defaults (dates, timezone) — call on client mount only */
+export function applyDynamicDefaults(data: CreateEventFormData): CreateEventFormData {
+  if (data.startsAt) return data; // already set
+
+  const now = new Date();
+  const start = roundUp15(new Date(now.getTime() + 60 * 60_000));
+  const end = new Date(start.getTime() + 2 * 60 * 60_000);
+
+  let tz = data.timezone;
+  try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch { /* */ }
+
+  return { ...data, startsAt: toLocalInput(start), endsAt: toLocalInput(end), timezone: tz };
 }
 
 /* ─── Step Labels ────────────────────────────────────────── */

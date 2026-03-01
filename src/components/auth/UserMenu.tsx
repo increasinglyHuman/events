@@ -1,8 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, LayoutDashboard } from "lucide-react";
 
 export function UserMenu() {
   const { user, signOut, isAuthenticated } = useAuth();
@@ -11,7 +12,10 @@ export function UserMenu() {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="flex items-center gap-2 text-sm text-text-secondary">
+      <Link
+        href="/dashboard"
+        className="flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
+      >
         {user.picture ? (
           <img
             src={user.picture}
@@ -24,7 +28,14 @@ export function UserMenu() {
           </div>
         )}
         <span className="hidden sm:inline max-w-[120px] truncate">{user.name}</span>
-      </div>
+      </Link>
+      <Link
+        href="/dashboard"
+        className="h-7 w-7 flex items-center justify-center rounded-md text-text-muted hover:text-accent hover:bg-accent/10 transition-colors"
+        title="Dashboard"
+      >
+        <LayoutDashboard className="h-4 w-4" />
+      </Link>
       <Button
         variant="ghost"
         size="sm"

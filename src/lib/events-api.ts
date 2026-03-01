@@ -177,6 +177,16 @@ export const eventsApi = {
     },
   },
 
+  user: {
+    myEvents: async (): Promise<CalendarEvent[]> => {
+      return apiFetch("/api/user/events", []);
+    },
+
+    myRsvps: async (): Promise<{ rsvpStatus: string; event: CalendarEvent }[]> => {
+      return apiFetch("/api/user/rsvps", []);
+    },
+  },
+
   ratings: {
     submit: async (eventId: string, data: {
       rating: number;

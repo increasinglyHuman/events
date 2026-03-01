@@ -9,6 +9,7 @@ import rsvpsRouter from "./routes/rsvps.js";
 import venuesRouter from "./routes/venues.js";
 import organizersRouter from "./routes/organizers.js";
 import ratingsRouter from "./routes/ratings.js";
+import userRouter from "./routes/user.js";
 
 const PORT = parseInt(process.env.PORT || "3015", 10);
 
@@ -66,6 +67,7 @@ app.use("/api/events", rsvpsRouter);
 app.use("/api/events", ratingsRouter);
 app.use("/api/venues", venuesRouter);
 app.use("/api/organizers", organizersRouter);
+app.use("/api/user", userRouter);
 
 // 404 fallback
 app.use((_req, res) => {

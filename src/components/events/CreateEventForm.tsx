@@ -17,6 +17,7 @@ import { StepMedia } from "./create/StepMedia";
 import { StepReview } from "./create/StepReview";
 import {
   createDefaults,
+  applyDynamicDefaults,
   validateStep,
   type CreateEventFormData,
   type FormStep,
@@ -36,6 +37,11 @@ export function CreateEventForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [venues, setVenues] = useState<Venue[]>([]);
+
+  // Apply dynamic defaults (dates/timezone) on client mount — avoids SSR hydration mismatch
+  useEffect(() => {
+    setFormData((prev) => applyDynamicDefaults(prev));
+  }, []);
 
   // Load venues once on mount
   useEffect(() => {
