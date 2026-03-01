@@ -107,14 +107,14 @@ export const eventsApi = {
       return apiFetch(`/api/events/by-series/${id}`, getEventsBySeries(id));
     },
 
-    create: async (data: Partial<CalendarEvent>): Promise<CalendarEvent | null> => {
+    create: async (data: Record<string, unknown>): Promise<CalendarEvent | null> => {
       return apiFetch("/api/events", null, {
         method: "POST",
         body: JSON.stringify(data),
       });
     },
 
-    update: async (id: string, data: Partial<CalendarEvent>): Promise<CalendarEvent | null> => {
+    update: async (id: string, data: Record<string, unknown>): Promise<CalendarEvent | null> => {
       return apiFetch(`/api/events/${id}`, null, {
         method: "PUT",
         body: JSON.stringify(data),

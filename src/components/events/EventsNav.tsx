@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Search, X, Plus, CalendarDays } from "lucide-react";
@@ -17,6 +18,7 @@ interface EventsNavProps {
 
 export function EventsNav({ query, onQueryChange, className }: EventsNavProps) {
   const { isAuthenticated } = useAuth();
+  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -90,10 +92,7 @@ export function EventsNav({ query, onQueryChange, className }: EventsNavProps) {
           <Button
             size="sm"
             className="gap-1.5 text-xs bg-accent text-bg-deep hover:bg-accent/90 font-semibold"
-            onClick={() => {
-              // TODO: route to event creation flow
-              alert("Event creation coming soon!");
-            }}
+            onClick={() => router.push("/create")}
           >
             <Plus className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">List Event</span>
