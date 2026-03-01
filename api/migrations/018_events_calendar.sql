@@ -165,7 +165,7 @@ CREATE TABLE IF NOT EXISTS events (
 
 -- Primary listing queries
 CREATE INDEX IF NOT EXISTS idx_events_upcoming ON events (starts_at ASC)
-    WHERE status = 'published' AND starts_at > NOW();
+    WHERE status = 'published';
 CREATE INDEX IF NOT EXISTS idx_events_category_starts ON events (category, starts_at ASC)
     WHERE status = 'published';
 CREATE INDEX IF NOT EXISTS idx_events_maturity_starts ON events (maturity_rating, starts_at ASC)
