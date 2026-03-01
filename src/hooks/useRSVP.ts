@@ -2,10 +2,19 @@
 
 import { useState, useCallback, useEffect } from "react";
 import type { RSVPStatus } from "@/types/social";
+import { eventsApi } from "@/lib/events-api";
 
 const STORAGE_KEY = "poqpoq-events-rsvps";
 
 type RSVPMap = Record<string, RSVPStatus>;
+
+function isAuthenticated(): boolean {
+  try {
+    return !!localStorage.getItem("auth_token");
+  } catch {
+    return false;
+  }
+}
 
 export function useRSVP() {
   const [rsvps, setRsvps] = useState<RSVPMap>({});
@@ -30,7 +39,17 @@ export function useRSVP() {
 
   const setRSVP = useCallback(
     (eventId: string, status: RSVPStatus) => {
+      // Optimistic update
       persist({ ...rsvps, [eventId]: status });
+
+      // Sync to API if authenticated
+      if (isAuthenticated()) {
+        eventsApi.rsvps.set(eventId, status).catch(() => {
+          // Rollback on failure — restore previous state
+          const prev = { ...rsvps };
+          persist(prev);
+        });
+      }
     },
     [rsvps, persist]
   );
@@ -39,14 +58,21 @@ export function useRSVP() {
     (eventId: string, status: RSVPStatus) => {
       const current = rsvps[eventId];
       if (current === status) {
+        // Remove RSVP
         const next = { ...rsvps };
         delete next[eventId];
         persist(next);
+
+        if (isAuthenticated()) {
+          eventsApi.rsvps.remove(eventId).catch(() => {
+            persist({ ...rsvps });
+          });
+        }
       } else {
-        persist({ ...rsvps, [eventId]: status });
+        setRSVP(eventId, status);
       }
     },
-    [rsvps, persist]
+    [rsvps, persist, setRSVP]
   );
 
   const getRSVP = useCallback(
